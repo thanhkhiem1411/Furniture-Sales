@@ -1,0 +1,40 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block product_content %}
+  {% comment %} {% include 'app/slider.html' %} {% endcomment %}
+  <div class="container-fluid p-0">
+    <div class="banner-product">
+      <img class="img-fluid" src="{% static 'images/BannerProduct.png' %}" alt="" />
+    </div>
+    <div class="title">Sản phẩm</div>
+
+    <!-- List product -->
+    <div class="product-container row p-0">
+      <!-- List product -->
+      {% for product in products %}
+        <div class="content col-md-4">
+          <img class="product-img" src="{{ product.ImageURL }}" alt="" />
+          <div class="product-info">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-code">{{ product.code }}</div>
+            <div class="product-price">{{ product.price|floatformat:0 }} VNĐ</div>
+            <div class="btn-group">
+              <form method="post">
+                {% csrf_token %}
+                <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Thêm vào giỏ hàng</button>
+                <button data-product="{{ product.id }}" class="btn btn-outline-success add-btn view_product"><a href="{% url 'detail' %}">Xem</a></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <script>
+        alert('{{ message }}')
+      </script>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

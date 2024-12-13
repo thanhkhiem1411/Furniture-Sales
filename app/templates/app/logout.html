@@ -1,0 +1,9 @@
+{% extends 'app/base.html' %}
+{% block content %}
+  <h2>Đăng xuất</h2>
+  <p>Bạn có chắc chắn muốn đăng xuất?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Đồng ý</button>
+  </form>
+{% endblock %}

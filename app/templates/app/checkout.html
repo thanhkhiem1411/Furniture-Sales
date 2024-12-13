@@ -1,0 +1,47 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block checkout_content %}
+  <div class="container mb-5 mt-5">
+    <div class="row d-flex">
+      <div class="col-lg-6">
+        <div class="box-element">
+          <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190;Quay lại giỏ hàng</a>
+          <hr />
+          <h3>Đơn hàng</h3>
+          <hr />
+          {% for item in items %}
+            <div class="cart-row">
+              <div class="col-lg-3 d-flex">
+                <img class="row-image" src="{{ item.product.ImageURL }}" />
+              </div>
+              <div class="col-lg-3">
+                <p>{{ item.product.name }}</p>
+              </div>
+              <div class="col-lg-3">
+                <p>{{ item.product.price|floatformat:0 }} VNĐ</p>
+              </div>
+              <div class="col-lg-3">
+                <p>{{ item.quantity }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="box-element">
+          <div class="sale-container d-flex justify-content-between">
+            <h5 class="col-lg-4">Mã giảm giá</h5>
+            <div class="code-input align-items-center">
+              <input class="input-code-sale" type="text" name="sale" placeholder="Nhập mã giảm giá.." />
+              <a class="btn btn-warning" href="{% url 'pay_page' %}" >Áp dụng</a>
+            </div>
+          </div>
+          <h5>Tổng tiền: {{ order.get_cart_total|floatformat:0 }} VNĐ</h5>
+          <h5>Giảm được: 0 VNĐ</h5>
+          <a class="btn btn-success mt-3" href="{% url 'pay_page' %}">Tiếp tục thanh toán</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

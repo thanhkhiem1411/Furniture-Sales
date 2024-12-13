@@ -1,0 +1,37 @@
+{% load static %}
+{% block countdown %}
+  <div class="product-sale container-fluid d-flex">
+    <div class="product-sale-img">
+      <img class="product-sale-img img-fluid" src="{% static 'images/ProductSale.png' %}" alt="ProductSale" />
+    </div>
+    <div class="product-sale-content">
+      <div class="product-title">KHUYẾN MÃI ĐẶC BIỆT</div>
+      <div class="product-name">HEXCO CHAIR</div>
+      <div class="product-script">
+        Chương trình mua chung với giá ưu đãi, được bắt đầu từ ngày <b>19/12</b> đến <b>25/12/2021</b>. Với giá giảm <b>50%</b>.<br />
+        Dành cho <b>50 đơn mua chung đầu tiên!</b>
+      </div>
+      <div class="clock-countdown">
+        <div class="clock-container">
+          <div class="clock-item">
+            <span id="days" class="countdown mb-3">00</span>
+            NGÀY
+          </div>
+          <div class="clock-item">
+            <span id="hours" class="countdown mb-3">00</span>
+            GIỜ
+          </div>
+          <div class="clock-item">
+            <span id="minutes" class="countdown mb-3">00</span>
+            PHÚT
+          </div>
+          <div class="clock-item">
+            <span id="seconds" class="countdown mb-3">00</span>
+            GIÂY
+          </div>
+        </div>
+      </div>
+      <button class="button-product-sale">MUA NGAY</button>
+    </div>
+  </div>
+{% endblock %}
