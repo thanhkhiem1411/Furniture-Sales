@@ -19,7 +19,7 @@ def home(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer = customer, complete = False)
         items = order.orderitem_set.all()
-        messages.success(request, 'Đã thêm vào giỏ hàng')
+        # messages.success(request, 'Đã thêm vào giỏ hàng')
         cartItems = order.get_cart_items
     else:
         items = []
@@ -36,7 +36,7 @@ def product(request):
         order, created = Order.objects.get_or_create(customer = customer, complete = False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
-        messages.success(request, 'Đã thêm vào giỏ hàng')
+        # messages.success(request, 'Đã thêm vào giỏ hàng')
     else:
         items = []
         order  = {'get_cart_items': 0,'get_cart_total': 0}
@@ -125,7 +125,7 @@ def signup(request):
 
         # Tạo tài khoản người dùng mới
         user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
-        customer = Customer.objects.create(user=user)
+        customer = Customer.objects.create(user=user, name=user.username, email=user.email)
         user.save()
         customer.save()
 
