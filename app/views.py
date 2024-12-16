@@ -128,7 +128,7 @@ def signup(request):
         customer = Customer.objects.create(user=user, name=user.username, email=user.email)
         user.save()
         customer.save()
-
+        
         messages.success(request, 'Bạn đã đăng ký thành công! Hãy đăng nhập để tiếp tục.')
         return render(request, "app/login.html")
     return render(request, "app/register.html")
