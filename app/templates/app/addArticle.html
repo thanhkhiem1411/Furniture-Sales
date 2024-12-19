@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h1 class="text-center">Thêm sản phẩm</h1>
+            <h1 class="text-center">Thêm bài viết</h1>
         </div>
     </div>
     <div class="row">
@@ -13,14 +13,14 @@
 
             {% if submitted %}
                 <div class="alert alert-success" role="alert">
-                    Thêm sản phẩm thành công
+                    Thêm bài viết thành công
                 </div>
             {% else %}
-            <form method="POST" enctype="multipart/form-data" action="{% url 'addProduct' %}">
+            <form method="POST" enctype="multipart/form-data" action="{% url 'addArticle' %}">
                 {% csrf_token %}
 
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary my-3">Thêm sản phẩm</button>
+                {{ form_A.as_p }}
+                <button type="submit" class="btn btn-primary my-3">Thêm bài viết </button>
             </form>
             {% endif %}
         </div>

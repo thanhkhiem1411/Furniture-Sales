@@ -37,5 +37,20 @@
     {% endfor %}
 {% endif %}
   {% include 'app/countdown.html' %}
-  {% include 'app/article.html' %}
+  <div class="container">
+    <div class="title">Bài viết</div>
+    <div class="row article-container justify-content-around mb-5">
+      {% for article in articles|slice:':3' %}
+      <a href="{% url 'article' %}" class="content col-md-4">
+        <div >
+            <img class="product-img" src="{{ article.image.url }}" alt="" />
+          <div class="article-content text-center">
+            <div class="article-name">{{ article.name }}</div>
+            <div class="article-code">{{ article.date_up }}</div>
+          </div>
+        </div>
+      </a>
+      {% endfor %} 
+    </div>
+  </div>
 {% endblock %}

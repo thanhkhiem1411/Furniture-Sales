@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 def home(request):
-    admin = False
-    if request.user.is_authenticated and not request.session['admin']:
+    is_admin = request.session.get('admin', False)
+    if request.user.is_authenticated and not is_admin:
             customer = request.user.customer
             order, created = Order.objects.get_or_create(customer = customer, complete = False)
             items = order.orderitem_set.all()
@@ -28,9 +28,12 @@ def home(request):
         items = []
         order  = {'get_cart_items': 0,'get_cart_total': 0}
         cartItems = order['get_cart_items']
-    context = {'items':items, 'order': order}
+    articles = Article.objects.all()
+    context = {'items':items, 'order': order, 'articles':articles}
     products = Product.objects.all()
     context.update({'products':products,'cartItems':cartItems})
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request, 'app/home.html',context)
 
 def addArticle(request):
@@ -44,8 +47,10 @@ def addArticle(request):
         form = ArticleForm
         if 'submitted' in request.GET:
             submitted = True
-    
-    return render(request, 'app/addArticle.html', {'form_A': form, 'submitted': submitted})
+    context = {'form_A': form, 'submitted': submitted}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
+    return render(request, 'app/addArticle.html', context)
 
 def addProduct(request):
     submitted = False
@@ -58,11 +63,15 @@ def addProduct(request):
         form = ProductForm  
         if 'submitted' in request.GET:
             submitted = True
+    context = {'form': form, 'submitted': submitted}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
 
-    return render(request, 'app/addproduct.html', {'form': form, 'submitted': submitted})
+    return render(request, 'app/addproduct.html', context)
 
 def product(request):
-    if request.user.is_authenticated and not request.session['admin']:
+    is_admin = request.session.get('admin', False)
+    if request.user.is_authenticated and not is_admin:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer = customer, complete = False)
         items = order.orderitem_set.all()
@@ -76,11 +85,15 @@ def product(request):
         context = {'items':items, 'order': order, 'cartItems':cartItems}
     products = Product.objects.all()
     context = {'products':products}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request,"app/product.html",context)
 
 def article(request):
     articles = Article.objects.all()
     context = {'articles':articles}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request,"app/article.html",context)
     
 def cart(request):
@@ -95,6 +108,8 @@ def cart(request):
         order  = {'get_cart_items': 0,'get_cart_total': 0}
         cartItems = order['get_cart_items']
     context = {'items':items, 'order': order, 'cartItems': cartItems}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request,"app/cart.html",context)
 
 def checkout(request):
@@ -109,6 +124,8 @@ def checkout(request):
         order  = {'get_cart_items': 0,'get_cart_total': 0}
         cartItems = order['get_cart_items']
     context = {'items':items, 'order': order,'cartItems': cartItems}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request,"app/checkout.html",context)
 
 
@@ -139,6 +156,8 @@ def updateItem(request):
 
 def detail(request):
     context = {}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render(request,"app/detail.html",context)
 
 # Định nghĩa thêm hàm đăng ký và đăng nhập
@@ -199,6 +218,8 @@ def searchpage(request):
 # Pay
 def payPage (request):
     context ={}
+    is_admin = request.session.get('admin', False)
+    context.update({'is_admin': is_admin})
     return render (request, "app/paypage.html", context)
     
 # Profile

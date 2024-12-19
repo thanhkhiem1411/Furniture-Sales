@@ -16,7 +16,7 @@ class Product(models.Model):
     price =models.FloatField()
     code = models.CharField(max_length=20, null=True)
     digital = models.BooleanField(default=False, null=True, blank=False)
-    image = models.ImageField(null=True,blank=True)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -33,6 +33,7 @@ class Article (models.Model):
     name = models.CharField(max_length=200, null=True)
     date_up = models.CharField(max_length=10, null=True)
     image = models.ImageField(null=True, blank=True)
+    content = models.TextField(null=True)
 
     def __str__(self):
         return self.name
@@ -90,5 +91,4 @@ class ShippingAddress(models.Model):
     
     def __str__(self):
         return self.address
-    
-    
+

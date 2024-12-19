@@ -54,9 +54,11 @@
           <!-- Menu -->
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {% if not is_admin %}
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Trang chủ</a>
               </li>
+              {% endif %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'product' %}">Sản phẩm</a>
                 {% comment %} <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -75,14 +77,24 @@
                 </ul> {% endcomment %}
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'article' %}" tabindex="-1" aria-disabled="true">Bài viết</a>
+              </li>
+              {% if not is_admin %}
+              <li class="nav-item">
                 <a class="nav-link" tabindex="-1" aria-disabled="true" href="{% url 'cart' %}">Giỏ hàng</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Combo</a>
               </li>
+              {% endif %}
+              {% if is_admin %}
               <li class="nav-item">
-                <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Khuyến mãi</a>
+                <a class="nav-link" href="{% url 'addProduct' %}" tabindex="-1" aria-disabled="true">Thêm sản phẩm</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'addArticle' %}" tabindex="-1" aria-disabled="true">Thêm bài viết</a>
+              </li>
+              {% endif %}
             </ul>
 
             <!-- SearchBox -->
@@ -95,6 +107,7 @@
             <!-- Login -->
             <div class="d-flex justify-content-center align-items-center">
               <ul class="icon d-flex list-unstyled">
+                {% if not is_admin %}
                 <li>
                   <a href="{% url 'checkout' %}"><img class="icon-item me-3" src="{% static 'images/imgTruck.png' %}" style="width: 24px; height: 15px;" alt="Truck" /></a>
                 </li>
@@ -108,6 +121,10 @@
                 <li>
                   <a href="{% url 'cart' %}"><img class="icon-item me-3" src="{% static 'images/imgCart.png' %}" style="width: 18.46px; height: 15px;" alt="Cart" /></a>
                 </li>
+                {% endif %}
+                <li>
+                  <a href="{% url 'logout' %}"><img class="icon-item me-3" src="{% static 'images/logout.png' %}" style="width: 25px; height: 25px;" alt="Logout" /></a>
+                </li>
               </ul>
             </div>
           </div>
@@ -118,7 +135,7 @@
           <div class="top-banner-text">Tham gia chương trình đối tác của Homeclick.</div>
         </div>
         <div class="icon-close d-flex me-2">
-          <div class="text-decoration-underline">Tìm hiểu thêm</div>
+          <div class="text-decoration-underline">Tìm hiểu TThêm</div>
           <button class="close-button mx-2 bg-secondary border-0">&#10006;</button>
         </div>
       </div> -->
@@ -161,6 +178,12 @@
 
     {% endblock %}
     {% block addProduct %}
+
+    {% endblock %}
+    {% block addArticle %}
+
+    {% endblock %}
+    {% block article_content %}
 
     {% endblock %}
     <!-- Footer -->

@@ -38,46 +38,13 @@
         <label class="form-check-label" for="payment_method_cod">Thanh toán khi nhận hàng (COD)</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="payment_method" id="payment_method_online" value="online">
-        <label class="form-check-label" for="payment_method_online">Thanh toán trực tuyến</label>
-      </div>
-      <div class="form-check">
         <input class="form-check-input" type="radio" name="payment_method" id="payment_method_online" value="cod">
         <label class="form-check-label" for="payment_method">Thanh toán qua MOMO</label>
-      </div>
-    </div>
-
-    <div class="box-element mt-3 mb-3" id="payment_gateway_form" style="display: none;">
-      <p>Thông tin thanh toán trực tuyến:</p>
-      <div class="form-group">
-        <label for="card_number">Số thẻ tín dụng/ghi nợ:</label>
-        <input type="text" class="form-control" id="card_number" name="card_number" placeholder="XXXX XXXX XXXX XXXX">
-      </div>
-      <div class="form-group">
-        <label for="cvv">Mã CVV:</label>
-        <input type="text" class="form-control" id="cvv" name="cvv" placeholder="XXX">
-      </div>
-      <div class="form-group">
-        <label for="expiry_date">Ngày hết hạn:</label>
-        <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YYYY">
       </div>
     </div>
 
     <input id="form-button" class="btn btn-success btn-block" type="submit" value="Thanh toán">
   </div>
 </div>
-
-<script>
-$(document).ready(function() {
-  // Handle radio button clicks for payment method selection
-  $('input[name="payment_method"]').change(function() {
-    if ($(this).val() === 'online') {
-      $('#payment_gateway_form').show();
-    } else {
-      $('#payment_gateway_form').hide();
-    }
-  });
-});
-</script>
 
 {% endblock %}
