@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Product, Article
+from .models import Product, Article, ShippingAddress
 
 class ProductForm(ModelForm):
     class Meta:
@@ -40,3 +40,39 @@ class ArticleForm(ModelForm):
             'date_up': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Nhập ngày đăng'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Nhập nội dung bài viết'}),
         }
+
+class DeliveryForm(ModelForm):
+    class Meta:
+        model = ShippingAddress
+        fields = "__all__"
+
+        labels = {
+            'customer': 'Tên',
+            'address': 'Địa chỉ',
+            'city': 'Thành phố',
+            'state': 'Tỉnh/Thành phố',
+            'mobile': 'Số điện thoại',
+        }
+        widgets = {
+            'order': forms.HiddenInput(),
+            'customer': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập tên'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập địa chỉ'}),
+            'city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập thành phố'}),
+            'state': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập tỉnh/thành phố'}),
+            'mobile': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nhập số điện thoại'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(DeliveryForm, self).__init__(*args, **kwargs)
+        print("Initializing DeliveryForm")
+        if 'initial' in kwargs:
+            initial = kwargs['initial']
+            customer = initial.get('customer', None)
+            if customer:
+                print("Customer: ", customer, customer.name)
+                self.fields['customer'].initial = customer.name
+                self.fields['mobile'].initial = customer.phone_number
+                self.fields['address'].initial = customer.address
+            order = initial.get('order', None)
+            if order:
+                self.fields['order'].initial = order
