@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.urls import reverse 
 from .models import *
 import json
@@ -9,41 +9,73 @@ import logging
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from .forms import ProductForm, ArticleForm
+
 logger = logging.getLogger(__name__)
 
 
 
 # Create your views here.
 def home(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer = customer, complete = False)
-        items = order.orderitem_set.all()
-        # messages.success(request, 'Đã thêm vào giỏ hàng')
-        cartItems = order.get_cart_items
+    admin = False
+    if request.user.is_authenticated and not request.session['admin']:
+            customer = request.user.customer
+            order, created = Order.objects.get_or_create(customer = customer, complete = False)
+            items = order.orderitem_set.all()
+            # messages.success(request, 'Đã thêm vào giỏ hàng')
+            cartItems = order.get_cart_items
     else:
         items = []
         order  = {'get_cart_items': 0,'get_cart_total': 0}
         cartItems = order['get_cart_items']
     context = {'items':items, 'order': order}
     products = Product.objects.all()
-    context = {'products':products,'cartItems':cartItems}
+    context.update({'products':products,'cartItems':cartItems})
     return render(request, 'app/home.html',context)
 
+def addArticle(request):
+    submitted = False
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/addArticle?sumitted=True')
+    else:
+        form = ArticleForm
+        if 'submitted' in request.GET:
+            submitted = True
+    
+    return render(request, 'app/addArticle.html', {'form_A': form, 'submitted': submitted})
+
+def addProduct(request):
+    submitted = False
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/addProduct?submitted=True')
+    else:
+        form = ProductForm  
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'app/addproduct.html', {'form': form, 'submitted': submitted})
+
 def product(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and not request.session['admin']:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer = customer, complete = False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
+        context = {'items':items, 'order': order ,'cartItems':cartItems}
         # messages.success(request, 'Đã thêm vào giỏ hàng')
     else:
         items = []
         order  = {'get_cart_items': 0,'get_cart_total': 0}
         cartItems = order['get_cart_items']
-    context = {'items':items, 'order': order}
+        context = {'items':items, 'order': order, 'cartItems':cartItems}
     products = Product.objects.all()
-    context = {'products':products,'cartItems':cartItems}
+    context = {'products':products}
     return render(request,"app/product.html",context)
 
 def article(request):
@@ -145,6 +177,8 @@ def signin(request):
 
         if user is not None:
             login(request, user)
+            if not hasattr(request.user, 'customer'):
+                request.session['admin'] = True
             return redirect('home')
         else:
             messages.info(request, 'Username or password is not correct!!!')
@@ -185,7 +219,6 @@ def profileUser(request):
         customer.save()
 
         return JsonResponse({'status': 'success'})
-
     else:
         context = {
             'user': user,
@@ -199,5 +232,4 @@ def custom_logout(request):
     messages.success(request, 'Bạn đã đăng xuất thành công!')
     return redirect('home')
 
-    
-    
+

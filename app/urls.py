@@ -34,4 +34,6 @@ urlpatterns = [
     path('proflie/', views.profileUser, name="profile"),
     path('logout/', views.custom_logout, name='logout'),
     path('pay_page/', views.payPage, name='pay_page'),
+    path('addProduct/', views.addProduct, name='addProduct'),
+    path('addArticle/', views.addArticle, name='addArticle'),
 ]
