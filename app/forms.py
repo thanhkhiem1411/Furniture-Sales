@@ -69,8 +69,8 @@ class DeliveryForm(ModelForm):
             initial = kwargs['initial']
             customer = initial.get('customer', None)
             if customer:
-                print("Customer: ", customer, customer.name)
-                self.fields['customer'].initial = customer.name
+                self.fields['customer'].initial = str(customer.name)
+                print("Customer: ", customer.name)
                 self.fields['mobile'].initial = customer.phone_number
                 self.fields['address'].initial = customer.address
             order = initial.get('order', None)

@@ -9,7 +9,7 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=15, null = True)
     address = models.CharField(max_length=200, null=True)
     def __str__(self):
-        return str(self.name)
+        return self.name
     
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
